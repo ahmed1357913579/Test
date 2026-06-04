@@ -152,114 +152,26 @@
         <div class="home-footer"><div class="developer">Ahmed K.Alrushaydan</div><div class="version">version 2.0.0</div></div>
     </div>
 
-    <!-- صفحة الإعدادات -->
+    <!-- بقية الصفحات (بنفس المحتوى الأصلي) -->
     <div id="settingsPage" class="page">
-        <div class="page-header">
-            <h2>⚙️ إعدادات السحابة</h2>
-            <p style="font-size:12px; opacity:0.7;">أدخل رابط Google Apps Script</p>
-        </div>
-        
+        <div class="page-header"><h2>⚙️ إعدادات السحابة</h2><p style="font-size:12px; opacity:0.7;">أدخل رابط Google Apps Script</p></div>
         <div class="setup-box">
-            <div class="form-group">
-                <label>رابط Google Apps Script:</label>
-                <input type="text" id="apiUrl" placeholder="https://script.google.com/macros/s/.../exec" value="https://script.google.com/macros/s/AKfycbzTj1u3_I83cqYITxZk-YER33mO21jbnuk3OZ_Rkd8S2nOd6g87CCyCYCKtBnbL8b9veQ/exec">
-                <small>⚠️ تأكد من نشر التطبيق كـ Web App مع صلاحية Anyone</small>
-            </div>
+            <div class="form-group"><label>رابط Google Apps Script:</label><input type="text" id="apiUrl" placeholder="https://script.google.com/macros/s/.../exec" value="https://script.google.com/macros/s/AKfycbzTj1u3_I83cqYITxZk-YER33mO21jbnuk3OZ_Rkd8S2nOd6g87CCyCYCKtBnbL8b9veQ/exec"><small>⚠️ تأكد من نشر التطبيق كـ Web App مع صلاحية Anyone</small></div>
             <button class="btn btn-gold" onclick="saveApiUrl()">💾 حفظ الإعدادات</button>
             <button class="btn btn-success" onclick="syncFromCloud()">📥 تحميل من السحابة</button>
             <button class="btn btn-warning" onclick="checkCloudPassword()">💾 حفظ إلى السحابة</button>
             <button class="btn btn-dark" onclick="forceSyncFromCloud()">🔄 تحميل قسري (تحديث كامل)</button>
             <div id="cloudStatus" class="sync-status"></div>
-            <p style="font-size:11px; margin-top:10px; opacity:0.7;">
-                📌 التحميل التلقائي يعمل كل 15 دقيقة تلقائياً<br>
-                🔹 حفظ إلى السحابة: رفع آخر التعديلات<br>
-                🔹 تحميل من السحابة: جلب آخر البيانات
-            </p>
+            <p style="font-size:11px; margin-top:10px; opacity:0.7;">📌 التحميل التلقائي يعمل كل 15 دقيقة تلقائياً<br>🔹 حفظ إلى السحابة: رفع آخر التعديلات<br>🔹 تحميل من السحابة: جلب آخر البيانات</p>
         </div>
-        
-        <div class="card">
-            <h3>🔄 المزامنة التلقائية</h3>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span>🤖 تفعيل المزامنة التلقائية كل 15 دقيقة</span>
-                <label style="position: relative; display: inline-block; width: 50px; height: 24px;">
-                    <input type="checkbox" id="autoSyncToggle" onchange="toggleAutoSync()" style="opacity:0; width:0; height:0;">
-                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: 0.3s; border-radius: 24px;"></span>
-                    <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%;"></span>
-                </label>
-            </div>
-            <div id="autoSyncStatus" style="font-size:11px; margin-top:8px; text-align:center;"></div>
-        </div>
+        <div class="card"><h3>🔄 المزامنة التلقائية</h3><div style="display: flex; justify-content: space-between; align-items: center;"><span>🤖 تفعيل المزامنة التلقائية كل 15 دقيقة</span><label style="position: relative; display: inline-block; width: 50px; height: 24px;"><input type="checkbox" id="autoSyncToggle" onchange="toggleAutoSync()" style="opacity:0; width:0; height:0;"><span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: 0.3s; border-radius: 24px;"></span><span style="position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%;"></span></label></div><div id="autoSyncStatus" style="font-size:11px; margin-top:8px; text-align:center;"></div></div>
     </div>
 
-    <!-- باقي الصفحات (الأعضاء، القروض، الاشتراكات، الإحصائيات، الإدارة) -->
-    <div id="membersPage" class="page">
-        <div class="page-header"><h2>👥 الأعضاء</h2></div>
-        <input type="text" id="searchMember" placeholder="🔍 بحث باسم العضو...">
-        <div id="membersList"></div>
-    </div>
-
-    <div id="loansPage" class="page">
-        <div class="page-header"><h2>🏦 القروض النشطة</h2></div>
-        <div id="loansList"></div>
-    </div>
-
-    <div id="subscriptionsPage" class="page">
-        <div class="page-header"><h2>📅 الاشتراكات</h2></div>
-        <div class="card">
-            <h3>💰 تسجيل اشتراك للعضو</h3>
-            <select id="subMemberSelect"></select>
-            <input type="number" id="subAmount" placeholder="مبلغ الاشتراك (200)">
-            <input type="date" id="subDate">
-            <button class="btn btn-gold" onclick="recordMemberSubscription()">تسجيل اشتراك</button>
-        </div>
-        <div class="card">
-            <h3>👥 تسجيل اشتراك لعدة أعضاء</h3>
-            <button class="btn btn-dark" onclick="showMultiSubscriptionsModal()">اختيار الأعضاء</button>
-        </div>
-        <div class="card">
-            <h3>📋 سجل الاشتراكات</h3>
-            <div id="subscriptionsHistoryList"></div>
-        </div>
-        <div class="card">
-            <h3>🏦 سداد أقساط القروض</h3>
-            <select id="loanPaymentMember"></select>
-            <input type="date" id="loanPaymentDate">
-            <button class="btn btn-gold" onclick="makeLoanPayment()">سداد قسط</button>
-        </div>
-        <div class="card">
-            <h3>👥 سداد أقساط لعدة مقترضين</h3>
-            <button class="btn btn-dark" onclick="showMultiLoansModal()">اختيار المقترضين</button>
-        </div>
-        <div class="card">
-            <h3>📋 سجل سداد القروض</h3>
-            <div id="loanPaymentsHistoryList"></div>
-        </div>
-    </div>
-
-    <div id="statsPage" class="page">
-        <div class="page-header"><h2>📊 الإحصائيات</h2></div>
-        <div class="stats-grid">
-            <div class="stat-card"><div class="stat-label">الرصيد الإجمالي الحالي</div><div class="stat-value" id="totalBalance">0</div><div class="stat-label">ريال</div></div>
-            <div class="stat-card"><div class="stat-label">إجمالي المبالغ المقترضة</div><div class="stat-value" id="totalLoansAmount">0</div><div class="stat-label">ريال</div></div>
-            <div class="stat-card"><div class="stat-label">المتاح للإقراض</div><div class="stat-value" id="availableAmount">0</div><div class="stat-label">ريال</div></div>
-            <div class="stat-card"><div class="stat-label">بند الطوارئ</div><div class="stat-value" id="statsEmergency">0</div><div class="stat-label">ريال</div></div>
-            <div class="stat-card"><div class="stat-label">بند الزكاة</div><div class="stat-value" id="statsZakat">0</div><div class="stat-label">ريال</div></div>
-            <div class="stat-card"><div class="stat-label">عدد الأعضاء</div><div class="stat-value" id="memberCountStat">0</div><div class="stat-label">عضو</div></div>
-        </div>
-        <button class="btn btn-dark" onclick="refreshAll()">🔄 تحديث</button>
-        <button class="btn btn-dark" onclick="openStatsEdit()" style="margin-top:5px;">✏️ تعديل الإحصائيات</button>
-    </div>
-
-    <div id="adminControlPage" class="page">
-        <div class="page-header"><h2>🔐 الإدارة والتحكم</h2><p style="font-size:12px; opacity:0.7;">هذه الصفحة محمية بالرمز السري</p></div>
-        <div class="card"><h3>🔐 تغيير الرقم السري</h3><button class="btn btn-gold" onclick="openChangePasswordModal()">تغيير الرقم السري</button></div>
-        <div class="card"><h3>👥 إدارة المنسحبين</h3><button class="btn btn-warning" onclick="showWithdrawalLog()">📋 عرض سجل المنسحبين</button></div>
-        <div class="card"><h3>➕ إضافة عضو</h3><input type="text" id="newMemberName" placeholder="الاسم الكامل"><input type="tel" id="newMemberPhone" placeholder="رقم الجوال"><button class="btn btn-gold" onclick="addMember()">إضافة عضو</button></div>
-        <div class="card"><h3>🏦 إضافة قرض</h3><select id="loanMember"></select><input type="number" id="loanAmount" placeholder="مبلغ القرض"><input type="number" id="loanInstallment" placeholder="القسط الشهري"><input type="date" id="loanDate"><button class="btn btn-gold" onclick="addLoan()">إضافة قرض</button></div>
-        <div class="card"><h3>📞 أرقام المسؤولين</h3><input type="tel" id="phone1" placeholder="رقم المسؤول 1"><input type="tel" id="phone2" placeholder="رقم المسؤول 2"><input type="tel" id="phone3" placeholder="رقم المسؤول 3"><button class="btn btn-gold" onclick="savePhones()">حفظ</button></div>
-        <div class="card"><h3>👥 إعادة الأعضاء الأصليين</h3><button class="btn btn-warning" onclick="restoreOriginalMembers()">🔄 إعادة الـ 16 عضو الأصليين</button></div>
-        <div class="card"><h3>🗑️ إعادة تعيين</h3><button class="btn btn-red" onclick="resetAll()">مسح جميع البيانات</button></div>
-    </div>
+    <div id="membersPage" class="page"><div class="page-header"><h2>👥 الأعضاء</h2></div><input type="text" id="searchMember" placeholder="🔍 بحث باسم العضو..."><div id="membersList"></div></div>
+    <div id="loansPage" class="page"><div class="page-header"><h2>🏦 القروض النشطة</h2></div><div id="loansList"></div></div>
+    <div id="subscriptionsPage" class="page"><div class="page-header"><h2>📅 الاشتراكات</h2></div><div class="card"><h3>💰 تسجيل اشتراك للعضو</h3><select id="subMemberSelect"></select><input type="number" id="subAmount" placeholder="مبلغ الاشتراك (200)"><input type="date" id="subDate"><button class="btn btn-gold" onclick="recordMemberSubscription()">تسجيل اشتراك</button></div><div class="card"><h3>👥 تسجيل اشتراك لعدة أعضاء</h3><button class="btn btn-dark" onclick="showMultiSubscriptionsModal()">اختيار الأعضاء</button></div><div class="card"><h3>📋 سجل الاشتراكات</h3><div id="subscriptionsHistoryList"></div></div><div class="card"><h3>🏦 سداد أقساط القروض</h3><select id="loanPaymentMember"></select><input type="date" id="loanPaymentDate"><button class="btn btn-gold" onclick="makeLoanPayment()">سداد قسط</button></div><div class="card"><h3>👥 سداد أقساط لعدة مقترضين</h3><button class="btn btn-dark" onclick="showMultiLoansModal()">اختيار المقترضين</button></div><div class="card"><h3>📋 سجل سداد القروض</h3><div id="loanPaymentsHistoryList"></div></div></div>
+    <div id="statsPage" class="page"><div class="page-header"><h2>📊 الإحصائيات</h2></div><div class="stats-grid"><div class="stat-card"><div class="stat-label">الرصيد الإجمالي الحالي</div><div class="stat-value" id="totalBalance">0</div><div class="stat-label">ريال</div></div><div class="stat-card"><div class="stat-label">إجمالي المبالغ المقترضة</div><div class="stat-value" id="totalLoansAmount">0</div><div class="stat-label">ريال</div></div><div class="stat-card"><div class="stat-label">المتاح للإقراض</div><div class="stat-value" id="availableAmount">0</div><div class="stat-label">ريال</div></div><div class="stat-card"><div class="stat-label">بند الطوارئ</div><div class="stat-value" id="statsEmergency">0</div><div class="stat-label">ريال</div></div><div class="stat-card"><div class="stat-label">بند الزكاة</div><div class="stat-value" id="statsZakat">0</div><div class="stat-label">ريال</div></div><div class="stat-card"><div class="stat-label">عدد الأعضاء</div><div class="stat-value" id="memberCountStat">0</div><div class="stat-label">عضو</div></div></div><button class="btn btn-dark" onclick="refreshAll()">🔄 تحديث</button><button class="btn btn-dark" onclick="openStatsEdit()" style="margin-top:5px;">✏️ تعديل الإحصائيات</button></div>
+    <div id="adminControlPage" class="page"><div class="page-header"><h2>🔐 الإدارة والتحكم</h2><p style="font-size:12px; opacity:0.7;">هذه الصفحة محمية بالرمز السري</p></div><div class="card"><h3>🔐 تغيير الرقم السري</h3><button class="btn btn-gold" onclick="openChangePasswordModal()">تغيير الرقم السري</button></div><div class="card"><h3>👥 إدارة المنسحبين</h3><button class="btn btn-warning" onclick="showWithdrawalLog()">📋 عرض سجل المنسحبين</button></div><div class="card"><h3>➕ إضافة عضو</h3><input type="text" id="newMemberName" placeholder="الاسم الكامل"><input type="tel" id="newMemberPhone" placeholder="رقم الجوال"><button class="btn btn-gold" onclick="addMember()">إضافة عضو</button></div><div class="card"><h3>🏦 إضافة قرض</h3><select id="loanMember"></select><input type="number" id="loanAmount" placeholder="مبلغ القرض"><input type="number" id="loanInstallment" placeholder="القسط الشهري"><input type="date" id="loanDate"><button class="btn btn-gold" onclick="addLoan()">إضافة قرض</button></div><div class="card"><h3>📞 أرقام المسؤولين</h3><input type="tel" id="phone1" placeholder="رقم المسؤول 1"><input type="tel" id="phone2" placeholder="رقم المسؤول 2"><input type="tel" id="phone3" placeholder="رقم المسؤول 3"><button class="btn btn-gold" onclick="savePhones()">حفظ</button></div><div class="card"><h3>👥 إعادة الأعضاء الأصليين</h3><button class="btn btn-warning" onclick="restoreOriginalMembers()">🔄 إعادة الـ 16 عضو الأصليين</button></div><div class="card"><h3>🗑️ إعادة تعيين</h3><button class="btn btn-red" onclick="resetAll()">مسح جميع البيانات</button></div></div>
 
     <div class="bottom-nav">
         <button class="nav-btn" onclick="showPage('homePage')"><span>🏠</span><span>الرئيسية</span></button>
@@ -272,7 +184,7 @@
     </div>
 </div>
 
-<!-- النوافذ المنبثقة (كما هي) -->
+<!-- النوافذ المنبثقة -->
 <div id="codeModal" class="modal"><div class="modal-content"><h3>🔐 رمز الدخول</h3><input type="password" id="secretCode" class="code-input" placeholder="•••••" maxlength="20"><button class="btn btn-gold" onclick="verifyCode()">تأكيد</button><button class="btn btn-dark" onclick="closeModal()">إلغاء</button></div></div>
 <div id="changePasswordModal" class="modal"><div class="modal-content"><h3>🔐 تغيير الرقم السري</h3><div class="form-group"><label>الرقم السري القديم:</label><input type="password" id="oldPassword" class="code-input" maxlength="20"></div><div class="form-group"><label>الرقم السري الجديد:</label><input type="password" id="newPassword" class="code-input" maxlength="20"></div><div class="form-group"><label>تأكيد الرقم السري الجديد:</label><input type="password" id="confirmNewPassword" class="code-input" maxlength="20"></div><div class="flex-btns"><button class="btn btn-success" onclick="changePassword()">تأكيد التغيير</button><button class="btn btn-dark" onclick="closeModal()">إلغاء</button></div></div></div>
 <div id="zakatPaymentModal" class="modal"><div class="modal-content"><h3>📿 دفع الزكاة</h3><div class="form-group"><label>المبلغ (ريال):</label><input type="number" id="zakatAmount" placeholder="المبلغ"></div><div class="form-group"><label>التاريخ:</label><input type="date" id="zakatDate"></div><div class="flex-btns"><button class="btn btn-success" onclick="confirmZakatPayment()">✅ تأكيد الدفع</button><button class="btn btn-dark" onclick="closeModal()">إلغاء</button></div></div></div>
@@ -342,34 +254,97 @@
     
     let apiUrl = localStorage.getItem('apiUrl') || 'https://script.google.com/macros/s/AKfycbzTj1u3_I83cqYITxZk-YER33mO21jbnuk3OZ_Rkd8S2nOd6g87CCyCYCKtBnbL8b9veQ/exec';
     
-    let customStatsData = {
-        totalBalance: null,
-        totalLoansAmount: null,
-        availableAmount: null,
-        emergencyBalance: null,
-        zakatBalance: null,
-        memberCount: null
-    };
+    let customStatsData = { totalBalance: null, totalLoansAmount: null, availableAmount: null, emergencyBalance: null, zakatBalance: null, memberCount: null };
     
     let autoSyncInterval = null;
     let isAutoSyncEnabled = localStorage.getItem('autoSyncEnabled') === 'true';
 
-    // ========== دالة تحميل ملف الأنظمة واللوائح ==========
+    // ========== دالة تنزيل الملف (بدون Base64 طويل) ==========
+    // هذه الدالة تقوم بإنشاء ملف PDF جديد بنفس محتوى الملف الأصلي
     function downloadRegulations() {
-        // تحويل الملف إلى Base64 وبدء التحميل
-        const pdfBase64 = "JVBERi0xLjQKJeLjz9MKMyAwIG9iago8PC9UeXBlIC9QYWdlCi9QYXJlbnQgMSAwIFIKL01lZGlhQm94IFswIDAgNTk1IDg0Ml0KL1Jlc291cmNlcyAyIDAgUgovQ29udGVudHMgNCAwIFI+PgplbmRvYmoKNCAwIG9iago8PC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMjI2Pj4Kc3RyZWFtCnicY2IABox/lBgY/v9ngAEGkKp/hf8Z/7MYMDIwgDCjAYMxYF2M2gxIDoPzGJkYkBwG5zEqMyBzaFQHSC6D8xmRgQIA3ucU4gplbmRzdHJlYW0KZW5kb2JqCjEgMCBvYmoKPDwvVHlwZSAvUGFnZXMKL0tpZHMgWzMgMCBSXQovQ291bnQgMQovUm90YXRlIDAuPj4KZW5kb2JqCjIgMCBvYmoKPDwvUHJvY1NldCBbL1BERiAvVGV4dF0KL0ZvbnQgPDwvRjEgNSAwIFI+Pgo+PgplbmRvYmoKNSAwIG9iago8PC9UeXBlIC9Gb250Ci9TdWJ0eXBlIC9UeXBlMQovTmFtZSAvRjEKL0Jhc2VGb250IC9IZWx2ZXRpY2E+PgplbmRvYmoKeHJlZgowIDYKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMzQwIDAwMDAwIG4gCjAwMDAwMDA0MDYgMDAwMDAgbiAKMDAwMDAwMDAxNSAwMDAwMCBuIAowMDAwMDAwMDkxIDAwMDAwIG4gCjAwMDAwMDA0NzEgMDAwMDAgbiAKdHJhaWxlcgo8PC9TaXplIDYKL1Jvb3QgMSAwIFIKL0luZm8gNiAwIFIKPj4Kc3RhcnR4cmVmCjUyMAolJUVPRgo=";
+        const { jsPDF } = window.jspdf;
+        let doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
         
-        // إنشاء رابط تحميل
-        const link = document.createElement('a');
-        link.href = 'data:application/pdf;base64,' + pdfBase64;
-        link.download = 'أنظمة ولوائح الصندوق 2.pdf';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        showMessage('✅ تم تحميل ملف أنظمة ولوائح الصندوق');
+        // إضافة المحتوى كما في الملف الأصلي
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(22);
+        doc.setTextColor(26, 42, 74);
+        doc.text('أنظمة ولوائح الصندوق', 105, 20, { align: 'center' });
+        
+        doc.setFontSize(12);
+        doc.setTextColor(100, 100, 100);
+        doc.text('قال تعالى: (وتعاونوا على البر والتقوى ولا تعاونوا على الإثم والعدوان)', 105, 35, { align: 'center' });
+        
+        doc.setFontSize(14);
+        doc.setTextColor(26, 42, 74);
+        doc.setFont('helvetica', 'bold');
+        doc.text('أعضاء مجلس الإدارة', 20, 55);
+        
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'normal');
+        doc.text('الرئيس / عبد الله عبد المصلح الرشيدان', 25, 68);
+        doc.text('أمين الصندوق / أحمد خليل الرشيدان', 25, 78);
+        doc.text('منسق عام / خالد محمد الرشيدان', 25, 88);
+        doc.text('(منذ تاريخ 2024/09/15)', 25, 98);
+        
+        let y = 115;
+        doc.setFontSize(13);
+        doc.setFont('helvetica', 'bold');
+        doc.text('أ- مجلس الإدارة', 20, y);
+        y += 10;
+        
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        let lines = [
+            '1- يتكون مجلس الإدارة من ثلاثة أعضاء على النحو التالي:',
+            '   • رئيس مجلس الإدارة',
+            '   • أمين الصندوق',
+            '   • منسق عام',
+            '2- يتم التصويت على تعيينهم كل سنتين.',
+            '3- يجب أن لا يكون الأعضاء إخوة.',
+            '',
+            'ب- الإشتراك والإنضباط في الصندوق:',
+            '1- يحق الإشتراك لأفراد عائلة عبد المصلح الرشيدان وأبنائهم وأحفادهم وأبناء الأحفاد.',
+            '2- يحق للمشترك اختيار أحد الحالات أدناه للإشتراك:',
+            '   • الإشتراك ب 200 لاير كحد أدنى ولا يحق له طلب قرض لمدة عام كامل من تاريخ دفع أول قسط.',
+            '   • الإشتراك ب قسط يحدده المشترك ولا يحق له طلب قرض لمدة عام كامل من تاريخ دفع أول قسط.',
+            '   • الإشتراك بدفعة مالية يحددها المشترك حسب رغبته ولا يحق له طلب قرض لمدة عام كامل من تاريخ دفع أول قسط.',
+            '3- يحق للمشترك الانسحاب في أي وقت واستلام رصيد اشتراكه مع الأخذ بعين الإعتبار البنود أدناه:',
+            '   • يتم خصم مبلغ الزكاة الإجمالي مقسوماً على عدد أعضاء الصندوق.',
+            '   • يتم خصم استقطاع مبلغ بند الطوارئ مقسوماً على عدد أفراد الصندوق.',
+            '   • في حال عدم توفر مبلغ رصيد اشتراكه في الرصيد المتوفر للإقراض يتم تسليمه المبلغ من بند الطوارئ.',
+            '',
+            'ج- بند الطوارئ:',
+            '1- استقطاع بند الطوارئ 15% من إجمالي المبالغ المدفوعة شهرياً.',
+            '2- البند يدعم الحالات التالية:',
+            '   • الزواج',
+            '   • العزاء',
+            '   • الحالات الطارئة بما يقرره مجلس الإدارة',
+            '',
+            'د- القروض والسداد:',
+            '1- يحق للمشترك اختيار مدة السداد للقروض بحد أقصى ثلاث سنوات مع إمكانية تقليص المدة حسب رغبته.',
+            '2- يحق للمشترك السداد المبكر للقروض كما بالبنود أدناه:',
+            '   • السداد المبكر قبل اكتمال ثلث مدة السداد للقرض ولا يحق له طلب قرض قبل إتمام عام كامل من تاريخ السداد المبكر.',
+            '   • السداد المبكر بعد اكتمال ثلث مدة السداد للقرض ولا يحق له طلب قرض قبل إتمام ستة أشهر من تاريخ السداد المبكر.',
+            '3- يحق للمشترك إعادة جدولة السداد لمرة واحدة فقط بما يتوافق مع البند رقم (د-2).',
+            '4- في حال اقترض المشترك ولم يقترض الحد الأعلى فإنه يحق له طلب المتبقي متى ما أراد ويتم حساب الحد الأعلى منذ تاريخ طلبه للقرض الأساسي.',
+            '',
+            'هـ- الدفع والتحويل:',
+            'يجب أن يتم الدفع عن طريق التحويل على الحساب أدناه:',
+            'SA1780000154608016124582'
+        ];
+        
+        for (let line of lines) {
+            if (y > 270) { doc.addPage(); y = 20; }
+            doc.text(line, 20, y);
+            y += 6;
+        }
+        
+        doc.save('أنظمة ولوائح الصندوق 2.pdf');
+        showMessage('✅ تم تنزيل ملف أنظمة ولوائح الصندوق');
     }
 
-    // ========== باقي الدوال (كما هي من الكود الأصلي) ==========
+    // ========== باقي الدوال (مختصرة للاختصار ولكنها تعمل بكامل وظائفها) ==========
     function showMessage(msg) { let toast = document.createElement('div'); toast.className = 'toast'; toast.innerHTML = msg; document.body.appendChild(toast); setTimeout(() => toast.remove(), 2000); }
     
     function showPage(pageId) {
@@ -377,12 +352,7 @@
         document.getElementById(pageId).classList.add('active');
         if (pageId === 'membersPage') displayMembers();
         if (pageId === 'loansPage') displayLoans();
-        if (pageId === 'subscriptionsPage') {
-            fillSubSelects();
-            fillLoanPaymentSelect();
-            displaySubscriptionsHistory();
-            displayLoanPaymentsHistory();
-        }
+        if (pageId === 'subscriptionsPage') { fillSubSelects(); fillLoanPaymentSelect(); displaySubscriptionsHistory(); displayLoanPaymentsHistory(); }
         if (pageId === 'statsPage') updateStatsDisplay();
         if (pageId === 'adminControlPage') updateAdminSelects();
         updateHomeCounts();
@@ -390,8 +360,7 @@
     
     function updateHomeCounts() {
         document.getElementById('homeMemberCount').innerHTML = members.length + ' عضو';
-        let activeLoans = loans.filter(l => l.remaining > 0).length;
-        document.getElementById('homeLoanCount').innerHTML = activeLoans + ' قرض';
+        document.getElementById('homeLoanCount').innerHTML = loans.filter(l => l.remaining > 0).length + ' قرض';
     }
     
     function getMembershipLevel(joinDate) {
