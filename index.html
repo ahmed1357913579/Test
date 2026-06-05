@@ -77,6 +77,45 @@
         .auto-sync-badge { position: fixed; bottom: 70px; right: 10px; background: #2e7d32; color: white; padding: 4px 8px; border-radius: 20px; font-size: 9px; z-index: 100; opacity: 0.7; }
         .withdrawal-calculation { background: #e8e0d0; padding: 15px; border-radius: 10px; margin: 10px 0; text-align: right; }
         .loan-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        
+        /* أنظمة ولوائح الصندوق */
+        .file-card {
+            background: #ffffff;
+            border: 2px solid #1a2a4a;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+        .file-card:hover {
+            background: #e8e0d0;
+            transform: translateY(-3px);
+        }
+        .file-card .icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .file-card .title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a2a4a;
+        }
+        .file-card .info {
+            font-size: 12px;
+            opacity: 0.6;
+            margin-top: 5px;
+        }
+        .regulations-page .upload-area {
+            border: 2px dashed #1a2a4a;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            background: #f5f0e6;
+            cursor: pointer;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -142,6 +181,7 @@
             <div class="icon-card" onclick="showPage('loansPage')"><div class="icon">🏦</div><div class="title">القروض</div><div class="info" id="homeLoanCount">0 قرض</div></div>
             <div class="icon-card" onclick="checkSubscriptionsAccess()"><div class="icon">📅</div><div class="title">الاشتراكات</div><div class="info">محمية</div></div>
             <div class="icon-card" onclick="showPage('statsPage')"><div class="icon">📊</div><div class="title">الإحصائيات</div><div class="info">الميزانية</div></div>
+            <div class="icon-card" onclick="showPage('regulationsPage')"><div class="icon">📁</div><div class="title">أنظمة ولوائح الصندوق</div><div class="info">الملفات واللوائح</div></div>
             <div class="icon-card" onclick="showSettingsPage()"><div class="icon">⚙️</div><div class="title">الإعدادات</div><div class="info">السحابة</div></div>
             <div class="icon-card" onclick="checkAdminAccess()"><div class="icon">🔐</div><div class="title">الإدارة</div><div class="info">محمية</div></div>
             <div class="icon-card" onclick="exportToPDF()"><div class="icon">📄</div><div class="title">تقرير PDF</div><div class="info">تصدير</div></div>
@@ -258,6 +298,30 @@
         <button class="btn btn-dark" onclick="openStatsEdit()" style="margin-top:5px;">✏️ تعديل الإحصائيات</button>
     </div>
 
+    <!-- صفحة أنظمة ولوائح الصندوق -->
+    <div id="regulationsPage" class="page regulations-page">
+        <div class="page-header">
+            <h2>📁 أنظمة ولوائح الصندوق</h2>
+            <p style="font-size:12px; opacity:0.7;">رفع وتنزيل ملف اللوائح والأنظمة</p>
+        </div>
+        
+        <!-- أيقونة رفع الملف (برمز سري) -->
+        <div class="file-card" onclick="checkUploadRegulations()">
+            <div class="icon">📤</div>
+            <div class="title">رفع الملف</div>
+            <div class="info">يتطلب الرمز السري 🔐</div>
+        </div>
+        
+        <!-- أيقونة تنزيل الملف (بدون رمز) -->
+        <div class="file-card" onclick="downloadRegulationsFile()">
+            <div class="icon">📥</div>
+            <div class="title">تنزيل الملف</div>
+            <div class="info">تحميل ملف اللوائح الحالي</div>
+        </div>
+        
+        <div id="regulationsFileInfo" style="text-align:center; margin-top:20px; font-size:12px; opacity:0.7;"></div>
+    </div>
+
     <!-- صفحة الإدارة المحمية -->
     <div id="adminControlPage" class="page">
         <div class="page-header"><h2>🔐 الإدارة والتحكم</h2><p style="font-size:12px; opacity:0.7;">هذه الصفحة محمية بالرمز السري</p></div>
@@ -276,6 +340,7 @@
         <button class="nav-btn" onclick="showPage('loansPage')"><span>🏦</span><span>القروض</span></button>
         <button class="nav-btn" onclick="checkSubscriptionsAccess()"><span>📅</span><span>الاشتراكات</span></button>
         <button class="nav-btn" onclick="showPage('statsPage')"><span>📊</span><span>الإحصائيات</span></button>
+        <button class="nav-btn" onclick="showPage('regulationsPage')"><span>📁</span><span>اللوائح</span></button>
         <button class="nav-btn" onclick="showSettingsPage()"><span>⚙️</span><span>الإعدادات</span></button>
         <button class="nav-btn" onclick="checkAdminAccess()"><span>🔐</span><span>الإدارة</span></button>
     </div>
@@ -393,7 +458,7 @@
     let pendingLoanId = null;
     let pendingWithdrawalMember = null;
     let pendingWithdrawalCalc = null;
-    let pendingCloudAction = null; // متغير جديد لتتبع إجراء السحابة
+    let pendingCloudAction = null;
     let members = [];
     let loans = [];
     let emergencyBalance = 9988;
@@ -405,7 +470,11 @@
     let loanPaymentsHistory = [];
     let withdrawalsHistory = [];
     
-    // إعدادات المزامنة (رابط Apps Script فقط)
+    // متغيرات رفع وتنزيل الملفات
+    let uploadedFileName = localStorage.getItem('regulationsFileName') || '';
+    let uploadedFileData = localStorage.getItem('regulationsFileData') || '';
+    
+    // إعدادات المزامنة
     let apiUrl = localStorage.getItem('apiUrl') || 'https://script.google.com/macros/s/AKfycbzTj1u3_I83cqYITxZk-YER33mO21jbnuk3OZ_Rkd8S2nOd6g87CCyCYCKtBnbL8b9veQ/exec';
     
     // إحصائيات مخصصة
@@ -497,14 +566,12 @@
         }
     }
     
-    // دالة جديدة للتحقق من الرمز قبل الحفظ إلى السحابة
     function checkCloudPassword() {
         pendingCloudAction = 'saveToCloud';
         document.getElementById('codeModal').style.display = 'flex';
         document.getElementById('secretCode').focus();
     }
     
-    // دالة تنفيذ الحفظ الفعلي إلى السحابة
     async function executeSaveToCloud() {
         if (!apiUrl) { 
             showMessage('❌ الرجاء إدخال رابط التطبيق أولاً'); 
@@ -532,11 +599,6 @@
         }
     }
     
-    // الدالة الأصلية syncToCloud تم تعديلها لتصبح checkCloudPassword
-    async function syncToCloud() {
-        checkCloudPassword();
-    }
-    
     async function syncFromCloud(silent = false) {
         if (!apiUrl) { 
             if (!silent) showMessage('❌ الرجاء إدخال رابط التطبيق أولاً'); 
@@ -561,14 +623,12 @@
             if (data.withdrawalsHistory) withdrawalsHistory = data.withdrawalsHistory;
             if (data.customStatsData) customStatsData = data.customStatsData;
             
-            // تحديث الإحصائيات المخصصة
             if (customStatsData.zakatBalance !== null && customStatsData.zakatBalance !== undefined) {
                 zakatBalance = customStatsData.zakatBalance;
             } else if (customStatsData.zakatBalance === null && data.zakatBalance !== undefined) {
                 customStatsData.zakatBalance = data.zakatBalance;
             }
             
-            // حفظ في localStorage
             localStorage.setItem('customStatsData', JSON.stringify(customStatsData));
             saveAllData();
             refreshAll();
@@ -584,7 +644,6 @@
         if (!apiUrl) { showMessage('❌ الرجاء إدخال رابط التطبيق أولاً'); return; }
         showMessage('⏳ جاري التحميل القسري...');
         try {
-            // مسح الكاش مؤقتاً
             let response = await fetch(apiUrl + '?t=' + Date.now(), { cache: 'no-store' });
             let data = await response.json();
             
@@ -614,7 +673,87 @@
         }
     }
 
-    // باقي الدوال كما هي (لم يتم تغييرها)
+    // ========== دوال رفع وتنزيل الملفات لأنظمة ولوائح الصندوق ==========
+    
+    // التحقق من الرمز السري قبل رفع الملف
+    function checkUploadRegulations() {
+        document.getElementById('codeModal').style.display = 'flex';
+        document.getElementById('secretCode').focus();
+        pendingAction = 'uploadRegulations';
+    }
+
+    // دالة رفع الملف (تستدعى بعد التحقق من الرمز)
+    function showUploadRegulationsFile() {
+        // إنشاء input مخفي لاختيار الملف
+        let input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.pdf,.doc,.docx,.txt,.xlsx,.xls,.jpg,.png';
+        input.onchange = function(e) {
+            let file = e.target.files[0];
+            if (!file) return;
+            
+            let reader = new FileReader();
+            reader.onload = function(evt) {
+                // تحويل الملف إلى Base64 لحفظه في localStorage
+                let base64Data = evt.target.result;
+                uploadedFileName = file.name;
+                uploadedFileData = base64Data;
+                
+                localStorage.setItem('regulationsFileName', uploadedFileName);
+                localStorage.setItem('regulationsFileData', uploadedFileData);
+                
+                updateRegulationsFileInfo();
+                showMessage(`✅ تم رفع الملف "${uploadedFileName}" بنجاح`);
+            };
+            reader.readAsDataURL(file);
+        };
+        input.click();
+    }
+
+    // تنزيل الملف (بدون رمز)
+    function downloadRegulationsFile() {
+        if (!uploadedFileData) {
+            showMessage('❌ لا يوجد ملف مرفوع حالياً. قم برفع ملف أولاً');
+            return;
+        }
+        
+        try {
+            // تحويل Base64 إلى Blob
+            let byteString = atob(uploadedFileData.split(',')[1]);
+            let mimeString = uploadedFileData.split(',')[0].split(':')[1].split(';')[0];
+            let ab = new ArrayBuffer(byteString.length);
+            let ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            let blob = new Blob([ab], { type: mimeString });
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = uploadedFileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showMessage(`✅ تم تنزيل الملف "${uploadedFileName}"`);
+        } catch(e) {
+            showMessage('❌ خطأ في تنزيل الملف');
+        }
+    }
+
+    // تحديث معلومات الملف المعروضة
+    function updateRegulationsFileInfo() {
+        let infoDiv = document.getElementById('regulationsFileInfo');
+        if (infoDiv) {
+            if (uploadedFileName && uploadedFileData) {
+                let fileSize = Math.round((uploadedFileData.length * 0.75) / 1024);
+                infoDiv.innerHTML = `📄 الملف المرفوع حالياً: <strong>${uploadedFileName}</strong> (${fileSize} كيلوبايت)`;
+            } else {
+                infoDiv.innerHTML = '📂 لا يوجد ملف مرفوع حالياً';
+            }
+        }
+    }
+
     // ========== حساب الانسحاب ==========
     function calculateWithdrawalAmount(member) {
         let subscriptionAmount = member.totalPaid;
@@ -1037,6 +1176,7 @@
         }
         if (pageId === 'statsPage') updateStatsDisplay();
         if (pageId === 'adminControlPage') updateAdminSelects();
+        if (pageId === 'regulationsPage') updateRegulationsFileInfo();
         updateHomeCounts();
     }
     
@@ -1253,7 +1393,7 @@
         }
     }
     
-    function refreshAll() { displayMembers(); displayLoans(); updateStatsDisplay(); updateHomeCounts(); displaySubscriptionsHistory(); displayLoanPaymentsHistory(); showMessage('✅ تم تحديث البيانات'); }
+    function refreshAll() { displayMembers(); displayLoans(); updateStatsDisplay(); updateHomeCounts(); displaySubscriptionsHistory(); displayLoanPaymentsHistory(); updateRegulationsFileInfo(); showMessage('✅ تم تحديث البيانات'); }
     
     function saveAllData() {
         localStorage.setItem('family_members', JSON.stringify(members));
@@ -1267,6 +1407,8 @@
         localStorage.setItem('family_loan_payments_history', JSON.stringify(loanPaymentsHistory));
         localStorage.setItem('family_withdrawals_history', JSON.stringify(withdrawalsHistory));
         localStorage.setItem('apiUrl', apiUrl);
+        localStorage.setItem('regulationsFileName', uploadedFileName);
+        localStorage.setItem('regulationsFileData', uploadedFileData);
         saveCustomStats();
     }
     
@@ -1282,6 +1424,8 @@
         let savedLoanPayments = localStorage.getItem('family_loan_payments_history');
         let savedWithdrawals = localStorage.getItem('family_withdrawals_history');
         let savedApiUrl = localStorage.getItem('apiUrl');
+        let savedFileName = localStorage.getItem('regulationsFileName');
+        let savedFileData = localStorage.getItem('regulationsFileData');
         
         if(savedMembers) members = JSON.parse(savedMembers);
         else members = JSON.parse(JSON.stringify(ORIGINAL_MEMBERS));
@@ -1298,6 +1442,8 @@
         if(savedLoanPayments) loanPaymentsHistory = JSON.parse(savedLoanPayments);
         if(savedWithdrawals) withdrawalsHistory = JSON.parse(savedWithdrawals);
         if(savedApiUrl) apiUrl = savedApiUrl;
+        if(savedFileName) uploadedFileName = savedFileName;
+        if(savedFileData) uploadedFileData = savedFileData;
         
         loadCustomStats();
         saveAllData();
@@ -1326,6 +1472,7 @@
             else if (pendingAction === 'zakatPayment') showZakatPaymentModal();
             else if (pendingAction === 'earlyRepayment') confirmEarlyRepayment();
             else if (pendingAction === 'executeWithdrawal') executeWithdrawal();
+            else if (pendingAction === 'uploadRegulations') showUploadRegulationsFile();
             else if (pendingCloudAction === 'saveToCloud') executeSaveToCloud();
             showMessage('✅ مرحباً بك');
         } else showMessage('❌ الرمز غير صحيح');
@@ -1389,6 +1536,7 @@
             document.getElementById('app').style.display = 'block';
             refreshAll();
             updateAdminSelects();
+            updateRegulationsFileInfo();
             if (isAutoSyncEnabled) startAutoSync();
             updateAutoSyncStatus();
             updateCloudStatus();
